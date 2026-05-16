@@ -41,6 +41,8 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["zonetrade_sdk"]
+# Включаем manifest.json в wheel — нужен backend'у для catalog endpoint'а.
+artifacts = ["zonetrade_sdk/plugins/**/manifest.json"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

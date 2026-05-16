@@ -42,8 +42,8 @@ from zonetrade_sdk.exceptions import (
     TierRequiredError,
 )
 from zonetrade_sdk.plugin import Plugin
-from zonetrade_sdk.plugins.fractals import FractalsPlugin
-from zonetrade_sdk.plugins.bybit_spot_fractals import BybitSpotFractalsPlugin
+# FractalsPlugin / BybitSpotFractalsPlugin перенесены в `plugins/fractals/`
+# (вне SDK — SDK предоставляет только Plugin base class и Client).
 from zonetrade_sdk.render import (
     RenderObject,
     RenderObjectCreated,
@@ -84,8 +84,6 @@ __all__ = [
     "RenderObject",
     "RenderObjectCreated",
     "Plugin",
-    "FractalsPlugin",
-    "BybitSpotFractalsPlugin",
     "AuthError",
     "ConnectionError",
     "OrderError",

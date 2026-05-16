@@ -478,6 +478,53 @@ class Client:
             "ttl": ttl,
         })
 
+    async def render_position(
+        self,
+        symbol: str,
+        tf: str,
+        side: str,
+        entry: float,
+        stop: float,
+        take: float,
+        time: int,
+        end_time: int,
+        take2: float | None = None,
+        take3: float | None = None,
+        tag: str | None = None,
+        ttl: int = 3600,
+    ) -> RenderObjectCreated:
+        """Bounded визуал торговой позиции (entry/SL/TP zones + LONG/SHORT label).
+
+        Рендерится в chartview через PositionPrimitive — risk-zone (red)
+        от entry до stop, profit-zone (green) от entry до take, line на
+        entry, label LONG/SHORT (или с префиксом `tag`).
+
+        Args:
+            side: 'long' | 'short'.
+            time / end_time: Unix секунды — границы позиции на оси времени.
+            take2, take3: опциональные доп. TP уровни.
+            tag: префикс к LONG/SHORT-лейблу (например `#42` для номера setup'а).
+
+        Возвращает RenderObjectCreated с `id` — можно потом удалить
+        через `delete_render_object()`.
+        """
+        style: dict[str, Any] = {"side": side}
+        if tag is not None: style["tag"] = tag
+        geometry: dict[str, Any] = {
+            "entry": entry, "stop": stop, "take": take,
+            "time": time, "endTime": end_time,
+        }
+        if take2 is not None: geometry["take2"] = take2
+        if take3 is not None: geometry["take3"] = take3
+        return await self._create_render({
+            "type": "position",
+            "symbol": symbol,
+            "tf": tf,
+            "geometry": geometry,
+            "style": style,
+            "ttl": ttl,
+        })
+
     async def delete_render_object(self, object_id: str) -> bool:
         """Удалить объект по id. True если был, False если уже истёк/нет."""
         data = await self._request(

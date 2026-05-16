@@ -97,6 +97,12 @@ class Plugin:
         self._render_ids.append(obj.id)
         return obj
 
+    async def render_position(self, **kw: Any) -> Any:
+        assert self._client is not None
+        obj = await self._client.render_position(**kw)
+        self._render_ids.append(obj.id)
+        return obj
+
     async def cleanup_render(self) -> None:
         """Удалить все render-объекты, которые плагин создал.
 
